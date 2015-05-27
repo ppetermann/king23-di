@@ -1,0 +1,12 @@
+{
+    "name": "king23/di",
+    "description": "king23 dependency injector",
+    "type": "lib",
+    "authors": [
+        {
+            "name": "Peter Petermann",
+            "email": "ppetermann80@googlemail.com"
+        }
+    ],
+    "require": {}
+}
