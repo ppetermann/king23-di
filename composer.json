@@ -3,7 +3,7 @@
     "description": "king23 dependency injector",
     "type": "lib",
     "license": "MIT",
-    
+
     "authors": [
         {
             "name": "Peter Petermann",
