@@ -1,7 +1,8 @@
 [![License](https://poser.pugx.org/king23/di/license.png)](https://packagist.org/packages/king23/di)
 [![Latest Stable Version](https://poser.pugx.org/king23/di/v/stable.png)](https://packagist.org/packages/king23/di)
 [![Total Downloads](https://poser.pugx.org/king23/di/downloads.png)](https://packagist.org/packages/king23/di)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ppetermann/king23/badges/quality-score.png?s=46a1e1b22d075da22f7392cf39b88c89ab3e4b55)](https://scrutinizer-ci.com/g/ppetermann/king23/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ppetermann/king23-di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ppetermann/king23-di/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/ppetermann/king23-di/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ppetermann/king23-di/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1ecb1847-a15f-4c00-9e80-374a701bc000/mini.png)](https://insight.sensiolabs.com/projects/1ecb1847-a15f-4c00-9e80-374a701bc000)
 # King23/DI, a dependency injection lib for King23
 Copyright (C) 2015 by Peter Petermann

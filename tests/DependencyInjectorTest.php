@@ -40,6 +40,16 @@ namespace King23\DI {
             $this->assertInstanceOf('\Inject\MockImplemented', $result->mockInjected);
             $this->assertTrue($result->test());
         }
+
+        /**
+         * @expectedException \Exception
+         * @expectedExceptionMessage no Injector registered for Inject\Something
+         */
+        public function testNotFound()
+        {
+            $instance = new DependencyInjector();
+            $instance->getInstanceOf(\Test\InjectFail::class);
+        }
     }
 }
 
@@ -48,6 +58,10 @@ namespace Inject {
     interface Mock
     {
         public function test();
+    }
+
+    interface Something {
+
     }
 
     class MockImplemented implements Mock
@@ -71,6 +85,14 @@ namespace Test {
         public function test()
         {
             return $this->mockInjected->test();
+        }
+    }
+
+    class InjectFail
+    {
+        public function __construct(\Inject\Something $foobar)
+        {
+
         }
     }
 }
