@@ -4,7 +4,6 @@ namespace King23\DI;
 class DependencyInjector
 {
     protected $injectors = [];
-    protected $instances = [];
 
     public function __construct()
     {
@@ -34,18 +33,40 @@ class DependencyInjector
             throw new \Exception("tried to get non existing service");
         }
 
-        if (!isset($this->instances[$interface])) {
-            $this->instances[$interface] = $this->injectors[$interface]();
-        }
-        return $this->instances[$interface];
+        return $this->injectors[$interface]();
     }
 
     /**
+     * register an service implementation as a singleton (shared instance)
      * @param $interface
      * @param callable $implementation
      * @throws \Exception
      */
-    public function registerInjector($interface, callable $implementation)
+    public function register($interface, callable $implementation)
+    {
+        if (isset($this->injectors[$interface])) {
+            throw new \Exception("Error: for $interface there is already an implementation registered");
+        }
+
+        // wraps the implementation in a singleton
+        $this->injectors[$interface] = function () use ($implementation) {
+            static $instance;
+            if (is_null($instance)) {
+                $instance = $implementation();
+            }
+
+            return $instance;
+        };
+    }
+
+    /**
+     * register a service implementation as a factory
+     *
+     * @param $interface
+     * @param callable $implementation
+     * @throws \Exception
+     */
+    public function registerFactory($interface, callable $implementation)
     {
         if (isset($this->injectors[$interface])) {
             throw new \Exception("Error: for $interface there is already an implementation registered");
@@ -73,7 +94,7 @@ class DependencyInjector
 
         /** @var \ReflectionParameter $parameter */
         foreach ($reflector->getConstructor()->getParameters() as $parameter) {
-            if(is_null($parameter->getClass())) {
+            if (is_null($parameter->getClass())) {
                 throw new \Exception("parameters for contstructor contains field without typehint");
             }
             $paramClass = $parameter->getClass()->getName();
@@ -83,6 +104,7 @@ class DependencyInjector
                 throw new \Exception("no Injector registered for $paramClass");
             }
         }
+
         return $reflector->newInstanceArgs($args);
     }
 }

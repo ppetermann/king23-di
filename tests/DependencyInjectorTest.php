@@ -14,12 +14,12 @@ namespace King23\DI {
             $instance = new DependencyInjector();
 
             // same injector two times should throw exception
-            $instance->registerInjector(
+            $instance->register(
                 'test',
                 function () {
                 }
             );
-            $instance->registerInjector(
+            $instance->register(
                 'test',
                 function () {
                 }
@@ -29,7 +29,7 @@ namespace King23\DI {
         public function testInjector()
         {
             $instance = new DependencyInjector();
-            $instance->registerInjector(
+            $instance->register(
                 \Inject\Mock::class,
                 function(){
                     return new MockImplemented();
@@ -49,6 +49,40 @@ namespace King23\DI {
         {
             $instance = new DependencyInjector();
             $instance->getInstanceOf(\Test\InjectFail::class);
+        }
+
+        public function testSingleton()
+        {
+            $instance = new DependencyInjector();
+            $instance->register(
+                \Inject\Mock::class,
+                function(){
+                    return new MockImplemented();
+                }
+            );
+
+            $result1 = $instance->getInstanceOf(\Test\InjectHere::class);
+            $result2 = $instance->getInstanceOf(\Test\InjectHere::class);
+            $this->assertInstanceOf('\Inject\MockImplemented', $result1->mockInjected);
+            $this->assertInstanceOf('\Inject\MockImplemented', $result2->mockInjected);
+            $this->assertTrue($result1->mockInjected === $result2->mockInjected);
+        }
+
+        public function testFactory()
+        {
+            $instance = new DependencyInjector();
+            $instance->registerFactory(
+                \Inject\Mock::class,
+                function(){
+                    return new MockImplemented();
+                }
+            );
+
+            $result1 = $instance->getInstanceOf(\Test\InjectHere::class);
+            $result2 = $instance->getInstanceOf(\Test\InjectHere::class);
+            $this->assertInstanceOf('\Inject\MockImplemented', $result1->mockInjected);
+            $this->assertInstanceOf('\Inject\MockImplemented', $result2->mockInjected);
+            $this->assertTrue($result1->mockInjected !== $result2->mockInjected);
         }
     }
 }
