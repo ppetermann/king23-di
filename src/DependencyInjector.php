@@ -85,10 +85,4 @@ class DependencyInjector
         }
         return $reflector->newInstanceArgs($args);
     }
-
-    public function injectTo(Injectable $object)
-    {
-
-    }
-
 }
