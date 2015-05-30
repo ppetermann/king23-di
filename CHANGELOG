@@ -3,4 +3,9 @@ VERSION 0  INITIAL RELEASE (UNSTABLE)
 =====================================
 
    Version 0.0 - initial release (unstable)
+      30/05/2015 15:04  0.0.2  cleanup version
+         30785a8 use the right badge
+         bdb1edd cleanup + further test
+         3cad499 removed simple test
+         f091d6b add license to composer.json
       30/05/2015 14:29  0.0.1  initial release
