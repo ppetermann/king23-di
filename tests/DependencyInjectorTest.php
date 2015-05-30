@@ -26,14 +26,40 @@ namespace King23\DI {
             );
         }
 
+        /**
+         * @expectedException \Exception
+         * @expectedExceptionMessage Error: for test there is already an implementation registered
+         */
+        public function testDoubleRegisterFactory()
+        {
+            $instance = new DependencyInjector();
+
+            // same injector two times should throw exception
+            $instance->register(
+                'test',
+                function () {
+                }
+            );
+            $instance->registerFactory(
+                'test',
+                function () {
+                }
+            );
+        }
+
         public function testInjector()
         {
             $instance = new DependencyInjector();
             $instance->register(
                 \Inject\Mock::class,
-                function(){
+                function () {
                     return new MockImplemented();
                 }
+            );
+
+            $this->assertInstanceOf(
+                \Inject\MockImplemented::class,
+                $instance->getInstanceOf(\Inject\Mock::class)
             );
 
             $result = $instance->getInstanceOf(\Test\InjectHere::class);
@@ -56,7 +82,7 @@ namespace King23\DI {
             $instance = new DependencyInjector();
             $instance->register(
                 \Inject\Mock::class,
-                function(){
+                function () {
                     return new MockImplemented();
                 }
             );
@@ -73,7 +99,7 @@ namespace King23\DI {
             $instance = new DependencyInjector();
             $instance->registerFactory(
                 \Inject\Mock::class,
-                function(){
+                function () {
                     return new MockImplemented();
                 }
             );
@@ -83,6 +109,16 @@ namespace King23\DI {
             $this->assertInstanceOf('\Inject\MockImplemented', $result1->mockInjected);
             $this->assertInstanceOf('\Inject\MockImplemented', $result2->mockInjected);
             $this->assertTrue($result1->mockInjected !== $result2->mockInjected);
+        }
+
+        /**
+         * @expectedException \Exception
+         * @expectedExceptionMessage parameters for contstructor contains field without typehint
+         */
+        public function testNoHint()
+        {
+            $instance = new DependencyInjector();
+            $instance->getInstanceOf(\Test\InjectNoHint::class);
         }
     }
 }
@@ -94,7 +130,8 @@ namespace Inject {
         public function test();
     }
 
-    interface Something {
+    interface Something
+    {
 
     }
 
@@ -108,9 +145,11 @@ namespace Inject {
 }
 
 namespace Test {
+
     class InjectHere
     {
         public $mockInjected;
+
         public function __construct(\Inject\Mock $injected)
         {
             $this->mockInjected = $injected;
@@ -125,6 +164,14 @@ namespace Test {
     class InjectFail
     {
         public function __construct(\Inject\Something $foobar)
+        {
+
+        }
+    }
+
+    class InjectNoHint
+    {
+        public function __construct($foo)
         {
 
         }

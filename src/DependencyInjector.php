@@ -29,10 +29,6 @@ class DependencyInjector
      */
     protected function getServiceInstanceFor($interface)
     {
-        if (!$this->hasServiceFor($interface)) {
-            throw new \Exception("tried to get non existing service");
-        }
-
         return $this->injectors[$interface]();
     }
 
