@@ -24,6 +24,7 @@ some meta-magic to inject by typehint.
 
 ## USAGE
 use composer:
+
 1) http://getcomposer.org
 2) within your project: `php composer.phar require king23/di`
 
