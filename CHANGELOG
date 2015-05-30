@@ -3,6 +3,9 @@ VERSION 0  INITIAL RELEASE (UNSTABLE)
 =====================================
 
    Version 0.0 - initial release (unstable)
+      30/05/2015 16:49  0.0.3  factory
+         69e8461 singleton/factory rather than singleton all the way
+         57596bd doc fix
       30/05/2015 15:04  0.0.2  cleanup version
          30785a8 use the right badge
          bdb1edd cleanup + further test
