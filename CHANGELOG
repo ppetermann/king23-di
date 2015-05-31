@@ -2,6 +2,11 @@
 VERSION 0  INITIAL RELEASE (UNSTABLE)
 =====================================
 
+   Version 0.1 - self injecting ftw
+      31/05/2015 15:39  0.1.0  initial release
+         4a4150f added ability to get instance of container injected
+         bade64f unittest improvements
+
    Version 0.0 - initial release (unstable)
       30/05/2015 16:49  0.0.3  factory
          69e8461 singleton/factory rather than singleton all the way
