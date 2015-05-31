@@ -2,6 +2,11 @@
 VERSION 0  INITIAL RELEASE (UNSTABLE)
 =====================================
 
+   Version 0.2 - working towards first release
+      31/05/2015 15:55  0.2.0  initial release
+         1a1706a more consistent naming
+         a01252a complete comments
+
    Version 0.1 - self injecting ftw
       31/05/2015 15:39  0.1.0  initial release
          4a4150f added ability to get instance of container injected
