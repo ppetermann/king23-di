@@ -1,7 +1,7 @@
 <?php
 namespace King23\DI;
 
-class DependencyInjector implements ContainerInterface
+class DependencyContainer implements ContainerInterface
 {
     protected $injectors = [];
 

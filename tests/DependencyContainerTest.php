@@ -3,7 +3,7 @@ namespace King23\DI {
 
     use Inject\MockImplemented;
 
-    class DependencyInjectorTest extends \PHPUnit_Framework_TestCase
+    class DependencyContainerTest extends \PHPUnit_Framework_TestCase
     {
         /**
          * @expectedException \Exception
@@ -11,7 +11,7 @@ namespace King23\DI {
          */
         public function testDoubleRegister()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
 
             // same injector two times should throw exception
             $instance->register(
@@ -32,7 +32,7 @@ namespace King23\DI {
          */
         public function testDoubleRegisterFactory()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
 
             // same injector two times should throw exception
             $instance->register(
@@ -49,7 +49,7 @@ namespace King23\DI {
 
         public function testInjector()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
             $instance->register(
                 \Inject\Mock::class,
                 function () {
@@ -73,13 +73,13 @@ namespace King23\DI {
          */
         public function testNotFound()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
             $instance->getInstanceOf(\Test\InjectFail::class);
         }
 
         public function testSingleton()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
             $instance->register(
                 \Inject\Mock::class,
                 function () {
@@ -96,7 +96,7 @@ namespace King23\DI {
 
         public function testFactory()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
             $instance->registerFactory(
                 \Inject\Mock::class,
                 function () {
@@ -117,13 +117,13 @@ namespace King23\DI {
          */
         public function testNoHint()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
             $instance->getInstanceOf(\Test\InjectNoHint::class);
         }
 
         public function testSelfInject()
         {
-            $instance = new DependencyInjector();
+            $instance = new DependencyContainer();
             $this->assertTrue(
                 $instance->getInstanceOf(\Test\SelfInject::class)->container === $instance
             );
