@@ -7,6 +7,7 @@ interface ContainerInterface
      * register an service implementation as a singleton (shared instance)
      * @param $interface
      * @param callable $implementation
+     * @return void
      * @throws \Exception
      */
     public function register($interface, callable $implementation);
@@ -16,6 +17,7 @@ interface ContainerInterface
      *
      * @param $interface
      * @param callable $implementation
+     * @return void
      * @throws \Exception
      */
     public function registerFactory($interface, callable $implementation);
