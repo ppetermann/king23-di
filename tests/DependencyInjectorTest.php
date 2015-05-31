@@ -120,7 +120,16 @@ namespace King23\DI {
             $instance = new DependencyInjector();
             $instance->getInstanceOf(\Test\InjectNoHint::class);
         }
+
+        public function testSelfInject()
+        {
+            $instance = new DependencyInjector();
+            $this->assertTrue(
+                $instance->getInstanceOf(\Test\SelfInject::class)->container === $instance
+            );
+        }
     }
+
 }
 
 namespace Inject {
@@ -145,6 +154,8 @@ namespace Inject {
 }
 
 namespace Test {
+
+    use King23\DI\ContainerInterface;
 
     class InjectHere
     {
@@ -174,6 +185,16 @@ namespace Test {
         public function __construct($foo)
         {
 
+        }
+    }
+
+    class SelfInject
+    {
+        public $container;
+
+        public function __construct(ContainerInterface $container)
+        {
+            $this->container = $container;
         }
     }
 }

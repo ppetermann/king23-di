@@ -1,12 +1,25 @@
 <?php
 namespace King23\DI;
 
-class DependencyInjector
+class DependencyInjector implements ContainerInterface
 {
     protected $injectors = [];
 
+    /**
+     * Constructor
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
+        $that = $this;
+        // we register ourselves, so this container can be injected too
+        $this->register(
+            ContainerInterface::class,
+            function () use ($that) {
+                return $that;
+            }
+        );
     }
 
     /**
@@ -34,6 +47,7 @@ class DependencyInjector
 
     /**
      * register an service implementation as a singleton (shared instance)
+     *
      * @param $interface
      * @param callable $implementation
      * @throws \Exception
