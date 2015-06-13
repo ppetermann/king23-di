@@ -3,6 +3,8 @@ VERSION 0  INITIAL RELEASE (UNSTABLE)
 =====================================
 
    Version 0.2 - working towards first release
+      13/06/2015 18:49  0.2.1  simple bugfix
+         f7e697e make sure classes don't require empty contstructors
       31/05/2015 15:55  0.2.0  initial release
          1a1706a more consistent naming
          a01252a complete comments
