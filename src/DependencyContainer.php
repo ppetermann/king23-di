@@ -102,16 +102,21 @@ class DependencyContainer implements ContainerInterface
         $reflector = new \ReflectionClass($classname);
         $args = [];
 
-        /** @var \ReflectionParameter $parameter */
-        foreach ($reflector->getConstructor()->getParameters() as $parameter) {
-            if (is_null($parameter->getClass())) {
-                throw new \Exception("parameters for contstructor contains field without typehint");
-            }
-            $paramClass = $parameter->getClass()->getName();
-            if ($this->hasServiceFor($paramClass)) {
-                $args[] = $this->getServiceInstanceFor($paramClass);
-            } else {
-                throw new \Exception("no Injector registered for $paramClass");
+        $constructor = $reflector->getConstructor();
+
+        // if there is no constructor, we don't need to inject anything
+        if (!is_null($constructor)) {
+            /** @var \ReflectionParameter $parameter */
+            foreach ($constructor->getParameters() as $parameter) {
+                if (is_null($parameter->getClass())) {
+                    throw new \Exception("parameters for contstructor contains field without typehint");
+                }
+                $paramClass = $parameter->getClass()->getName();
+                if ($this->hasServiceFor($paramClass)) {
+                    $args[] = $this->getServiceInstanceFor($paramClass);
+                } else {
+                    throw new \Exception("no Injector registered for $paramClass");
+                }
             }
         }
 
