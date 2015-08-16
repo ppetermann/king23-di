@@ -1,14 +1,19 @@
 <?php
 namespace King23\DI;
 
+use King23\DI\Exception\AlreadyRegisteredException;
+use King23\DI\Exception\NotFoundException;
+
+/**
+ * Class DependencyContainer
+ * @package King23\DI
+ */
 class DependencyContainer implements ContainerInterface
 {
     protected $injectors = [];
 
     /**
      * Constructor
-     *
-     * @throws \Exception
      */
     public function __construct()
     {
@@ -38,7 +43,6 @@ class DependencyContainer implements ContainerInterface
      *
      * @param string $interface
      * @return mixed
-     * @throws \Exception
      */
     protected function getServiceInstanceFor($interface)
     {
@@ -50,12 +54,12 @@ class DependencyContainer implements ContainerInterface
      *
      * @param $interface
      * @param callable $implementation
-     * @throws \Exception
+     * @throws AlreadyRegisteredException
      */
     public function register($interface, callable $implementation)
     {
         if (isset($this->injectors[$interface])) {
-            throw new \Exception("Error: for $interface there is already an implementation registered");
+            throw new AlreadyRegisteredException("Error: for $interface there is already an implementation registered");
         }
 
         // wraps the implementation in a singleton
@@ -74,12 +78,12 @@ class DependencyContainer implements ContainerInterface
      *
      * @param $interface
      * @param callable $implementation
-     * @throws \Exception
+     * @throws AlreadyRegisteredException
      */
     public function registerFactory($interface, callable $implementation)
     {
         if (isset($this->injectors[$interface])) {
-            throw new \Exception("Error: for $interface there is already an implementation registered");
+            throw new AlreadyRegisteredException("Error: for $interface there is already an implementation registered");
         }
 
         $this->injectors[$interface] = $implementation;
@@ -88,7 +92,7 @@ class DependencyContainer implements ContainerInterface
     /**
      * @param string $classname fully qualified classname
      * @return object
-     * @throws \Exception
+     * @throws NotFoundException
      */
     public function getInstanceOf($classname)
     {
@@ -109,13 +113,13 @@ class DependencyContainer implements ContainerInterface
             /** @var \ReflectionParameter $parameter */
             foreach ($constructor->getParameters() as $parameter) {
                 if (is_null($parameter->getClass())) {
-                    throw new \Exception("parameters for contstructor contains field without typehint");
+                    throw new NotFoundException("parameters for constructor contains field without typehint");
                 }
                 $paramClass = $parameter->getClass()->getName();
                 if ($this->hasServiceFor($paramClass)) {
                     $args[] = $this->getServiceInstanceFor($paramClass);
                 } else {
-                    throw new \Exception("no Injector registered for $paramClass");
+                    throw new NotFoundException("no Injector registered for $paramClass");
                 }
             }
         }

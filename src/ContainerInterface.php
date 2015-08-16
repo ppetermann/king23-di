@@ -1,6 +1,8 @@
 <?php
 namespace King23\DI;
 
+use King23\DI\Exception\AlreadyRegisteredException;
+
 interface ContainerInterface
 {
     /**
@@ -8,7 +10,7 @@ interface ContainerInterface
      * @param $interface
      * @param callable $implementation
      * @return void
-     * @throws \Exception
+     * @throws AlreadyRegisteredException
      */
     public function register($interface, callable $implementation);
 
@@ -18,7 +20,7 @@ interface ContainerInterface
      * @param $interface
      * @param callable $implementation
      * @return void
-     * @throws \Exception
+     * @throws AlreadyRegisteredException
      */
     public function registerFactory($interface, callable $implementation);
 
@@ -27,7 +29,7 @@ interface ContainerInterface
      *
      * @param string $classname fully qualified classname
      * @return object
-     * @throws \Exception
+     * @throws AlreadyRegisteredException
      */
     public function getInstanceOf($classname);
 }

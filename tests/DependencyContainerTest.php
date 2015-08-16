@@ -6,7 +6,7 @@ namespace King23\DI {
     class DependencyContainerTest extends \PHPUnit_Framework_TestCase
     {
         /**
-         * @expectedException \Exception
+         * @expectedException \King23\DI\Exception\AlreadyRegisteredException
          * @expectedExceptionMessage Error: for test there is already an implementation registered
          */
         public function testDoubleRegister()
@@ -27,7 +27,7 @@ namespace King23\DI {
         }
 
         /**
-         * @expectedException \Exception
+         * @expectedException \King23\DI\Exception\AlreadyRegisteredException
          * @expectedExceptionMessage Error: for test there is already an implementation registered
          */
         public function testDoubleRegisterFactory()
@@ -68,7 +68,7 @@ namespace King23\DI {
         }
 
         /**
-         * @expectedException \Exception
+         * @expectedException \King23\DI\Exception\NotFoundException
          * @expectedExceptionMessage no Injector registered for Inject\Something
          */
         public function testNotFound()
@@ -112,8 +112,8 @@ namespace King23\DI {
         }
 
         /**
-         * @expectedException \Exception
-         * @expectedExceptionMessage parameters for contstructor contains field without typehint
+         * @expectedException \King23\DI\Exception\NotFoundException
+         * @expectedExceptionMessage parameters for constructor contains field without typehint
          */
         public function testNoHint()
         {
