@@ -1,4 +1,12 @@
 
+VERSION 1  STABLE RELEASE
+=========================
+
+   Version 1.0 - stable release
+      16/08/2015 12:49  1.0.0  initial release
+         bd8a31b fix to code documentation
+         e4c73a3 documentation + own exceptions
+
 VERSION 0  INITIAL RELEASE (UNSTABLE)
 =====================================
 
