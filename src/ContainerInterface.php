@@ -2,6 +2,7 @@
 namespace King23\DI;
 
 use King23\DI\Exception\AlreadyRegisteredException;
+use King23\DI\Exception\NotFoundException;
 
 interface ContainerInterface
 {
@@ -29,7 +30,7 @@ interface ContainerInterface
      *
      * @param string $classname fully qualified classname
      * @return object
-     * @throws AlreadyRegisteredException
+     * @throws NotFoundException
      */
     public function getInstanceOf($classname);
 }
