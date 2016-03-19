@@ -33,7 +33,7 @@ Basically the container offers 3 Methods:
  - void registerFactory(string $interface, callable $implementation)
  - mixed getInstanceOf(string $classname)
 
-**register($interface, $implementation)** is used to register dependencies for injection, while interface can be any string it is meant to hold the name of an interface. the callable is supposed to be a method which will return a new instance of the interface (the interface is NOT enforced, hence you *could* return something else, but you **shouldn't** do that.). The object returned here will only be instanced once, hence it is basically a singleton.
+**register($interface, $implementation)** is used to register dependencies for injection, while $interface can be any string in theory, it is meant to hold the name of an interface. The callable is supposed to be a method which should return a new instance of the interface (there is really nothing build in to stop you from using arbitrary strings, but the automated injection in the constructors when using getInstanceOf is using the type hints of the parameters. If you use any other string you can't have it automatic injected - which kind of voids the point. That said, it still can be of use when integrating King23/DI with frameworks that require specific keys in the DI). The object returned here will only be instanced once, further calls will return the same instance. 
 
 **registerFactory($interface, $implementation)** works the same way register() does, except that each time an instance of $interface is requested a new instance will be created.
 
