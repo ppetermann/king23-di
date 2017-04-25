@@ -1,4 +1,5 @@
 <?php
+
 namespace King23\DI;
 
 use King23\DI\Exception\AlreadyRegisteredException;
@@ -119,9 +120,13 @@ class DependencyContainer implements ContainerInterface
                 if ($this->hasServiceFor($paramClass)) {
                     $args[] = $this->getServiceInstanceFor($paramClass);
                 } else {
-                    throw new NotFoundException("no Injector registered for $paramClass");
+                    $args[] = $this->getInstanceOf($paramClass);
                 }
             }
+        }
+
+        if ($reflector->isInterface()) {
+            throw new NotFoundException("no Injector registered for interface: $classname");
         }
 
         return $reflector->newInstanceArgs($args);

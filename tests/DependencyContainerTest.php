@@ -69,7 +69,7 @@ namespace King23\DI {
 
         /**
          * @expectedException \King23\DI\Exception\NotFoundException
-         * @expectedExceptionMessage no Injector registered for Inject\Something
+         * @expectedExceptionMessage no Injector registered for interface: Inject\Something
          */
         public function testNotFound()
         {
