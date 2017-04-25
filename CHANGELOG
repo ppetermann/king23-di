@@ -2,6 +2,11 @@
 VERSION 1  STABLE RELEASE
 =========================
 
+   Version 1.1 - auto-instancing of found classes
+      25/04/2017 11:47  1.1.0  initial release
+         923821e ensure that available classes will be auto-instanced
+         91d6adf just a small doc improvement
+
    Version 1.0 - stable release
       16/08/2015 12:49  1.0.0  initial release
          bd8a31b fix to code documentation
