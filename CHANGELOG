@@ -3,6 +3,10 @@ VERSION 2  PSR-11 SUPPORT
 =========================
 
    Version 2.0 - PSR-11 support
+      25/08/2018 18:24  2.0.1  make sure this works with both the king23 and the psr interface
+         89d9874 feature: register both interfaces
+         87a3827 bugfix: register the psr container
+         29d411c bugfix: register the psr container
       25/08/2018 16:49  2.0.0  initial release
          0c927c9 rmt config
          ff897ee unclutter method
