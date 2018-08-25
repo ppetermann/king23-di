@@ -157,7 +157,10 @@ namespace King23\DI {
         {
             $instance = new DependencyContainer();
             $this->assertTrue(
-                $instance->get(\Test\SelfInject::class)->container === $instance
+                $instance->get(\Test\SelfInject::class)->containerPsr === $instance
+            );
+            $this->assertTrue(
+                $instance->get(\Test\SelfInject::class)->containerKing23 === $instance
             );
         }
     }
@@ -214,13 +217,22 @@ namespace Test {
 
     class SelfInject
     {
-        public $container;
+        public $containerPsr;
+        public $containerKing23;
 
-        public function __construct(ContainerInterface $container)
+        /**
+         * SelfInject constructor.
+         * @param ContainerInterface $containerPsr
+         * @param \King23\DI\ContainerInterface $containerKing23
+         */
+        public function __construct(ContainerInterface $containerPsr, \King23\DI\ContainerInterface $containerKing23)
         {
-            $this->container = $container;
+            $this->containerPsr = $containerPsr;
+            $this->containerKing23 = $containerKing23;
         }
     }
+
+
 
     class HintNotFound
     {

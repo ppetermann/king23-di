@@ -27,6 +27,14 @@ class DependencyContainer implements ContainerInterface
                 return $that;
             }
         );
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->register(
+            ContainerInterface::class,
+            function () use ($that) {
+                return $that;
+            }
+        );
     }
 
     /**
