@@ -10,7 +10,8 @@ _default:
     prerequisites:
      - working-copy-check
      - display-last-changes
-     - tests-check
+     - tests-check:
+        command: vendor/bin/phpunit
      - composer-stability-check
      - composer-security-check
 
