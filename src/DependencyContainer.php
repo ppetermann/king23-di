@@ -22,7 +22,7 @@ class DependencyContainer implements ContainerInterface
         // we register ourselves, so this container can be injected too
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->register(
-            ContainerInterface::class,
+            \Psr\Container\ContainerInterface::class,
             function () use ($that) {
                 return $that;
             }
