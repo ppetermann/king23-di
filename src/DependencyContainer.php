@@ -20,6 +20,7 @@ class DependencyContainer implements ContainerInterface
     {
         $that = $this;
         // we register ourselves, so this container can be injected too
+        /** @noinspection PhpUnhandledExceptionInspection */
         $this->register(
             ContainerInterface::class,
             function () use ($that) {
@@ -94,8 +95,9 @@ class DependencyContainer implements ContainerInterface
      * @param string $classname fully qualified classname
      * @return object
      * @throws NotFoundException
+     * @throws \ReflectionException
      */
-    public function getInstanceOf($classname)
+    public function get($classname)
     {
         // first we check if this is maybe a known service
         if ($this->hasServiceFor($classname)) {
@@ -104,7 +106,14 @@ class DependencyContainer implements ContainerInterface
 
         // alright, this was not one of our known services, so we assume
         // we are supposed to play factory for $classname
+
+        // lets see if the class actually exists first
+        if (!class_exists($classname, true) && !interface_exists($classname, true)) {
+            throw new NotFoundException("Class/Interface not found: '$classname'");
+        }
+
         $reflector = new \ReflectionClass($classname);
+
         $args = [];
 
         $constructor = $reflector->getConstructor();
@@ -113,22 +122,49 @@ class DependencyContainer implements ContainerInterface
         if (!is_null($constructor)) {
             /** @var \ReflectionParameter $parameter */
             foreach ($constructor->getParameters() as $parameter) {
-                if (is_null($parameter->getClass())) {
-                    throw new NotFoundException("parameters for constructor contains field without typehint");
+                try {
+                    if (is_null($parameter->getClass())) {
+                        throw new NotFoundException("parameters for constructor contains field without typehint");
+                    }
+                } catch (\ReflectionException $reflectionException) {
+                    throw new NotFoundException("can't reflect parameter '{$parameter->name}' of '$classname'", 0, $reflectionException);
                 }
                 $paramClass = $parameter->getClass()->getName();
                 if ($this->hasServiceFor($paramClass)) {
                     $args[] = $this->getServiceInstanceFor($paramClass);
                 } else {
-                    $args[] = $this->getInstanceOf($paramClass);
+                    $args[] = $this->get($paramClass);
                 }
             }
         }
 
         if ($reflector->isInterface()) {
-            throw new NotFoundException("no Injector registered for interface: $classname");
+            throw new NotFoundException("no Injector registered for interface: '$classname'");
         }
 
         return $reflector->newInstanceArgs($args);
+    }
+
+    /**
+     * Returns true if the container can return an entry for the given identifier.
+     * Returns false otherwise.
+     *
+     * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
+     * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
+     * @return bool
+     */
+    public function has($id)
+    {
+        // if we have a service registered, we can assume true
+        if($this->hasServiceFor($id)) {
+            return true;
+        }
+
+        // if we don't have as service registered, we might still pull one from the hat
+        // so lets at least check if the class would be available
+        return class_exists($id, true);
     }
 }

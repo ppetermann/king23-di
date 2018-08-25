@@ -1,5 +1,5 @@
 MIT License
-Copyright (c) 2015 Peter Petermann
+Copyright (c) 2015 - 2018 Peter Petermann
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

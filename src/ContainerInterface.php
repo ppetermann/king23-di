@@ -2,9 +2,8 @@
 namespace King23\DI;
 
 use King23\DI\Exception\AlreadyRegisteredException;
-use King23\DI\Exception\NotFoundException;
 
-interface ContainerInterface
+interface ContainerInterface extends \Psr\Container\ContainerInterface
 {
     /**
      * register an service implementation as a singleton (shared instance)
@@ -24,13 +23,4 @@ interface ContainerInterface
      * @throws AlreadyRegisteredException
      */
     public function registerFactory($interface, callable $implementation);
-
-    /**
-     * should create an instance of the given $classname, injecting interfaces to the constructor.
-     *
-     * @param string $classname fully qualified classname
-     * @return object
-     * @throws NotFoundException
-     */
-    public function getInstanceOf($classname);
 }

@@ -1,9 +1,10 @@
 <?php
+
 namespace King23\DI {
 
     use Inject\MockImplemented;
 
-    class DependencyContainerTest extends \PHPUnit_Framework_TestCase
+    class DependencyContainerPsr11Test extends \PHPUnit_Framework_TestCase
     {
         /**
          * @expectedException \King23\DI\Exception\AlreadyRegisteredException
@@ -57,24 +58,49 @@ namespace King23\DI {
                 }
             );
 
+            $this->assertTrue($instance->has(\Inject\Mock::class));
+
             $this->assertInstanceOf(
                 \Inject\MockImplemented::class,
-                $instance->getInstanceOf(\Inject\Mock::class)
+                $instance->get(\Inject\Mock::class)
             );
 
-            $result = $instance->getInstanceOf(\Test\InjectHere::class);
+            $result = $instance->get(\Test\InjectHere::class);
             $this->assertInstanceOf('\Inject\MockImplemented', $result->mockInjected);
             $this->assertTrue($result->test());
         }
 
         /**
          * @expectedException \King23\DI\Exception\NotFoundException
-         * @expectedExceptionMessage no Injector registered for interface: Inject\Something
+         * @expectedExceptionMessage Class/Interface not found: '\Test\InjectFail'
          */
-        public function testNotFound()
+        public function testClassNotFound()
         {
             $instance = new DependencyContainer();
-            $instance->getInstanceOf(\Test\InjectFail::class);
+            $this->assertFalse($instance->has('\Test\InjectFail'));
+            $instance->get('\Test\InjectFail');
+        }
+
+        /**
+         * @expectedException \King23\DI\Exception\NotFoundException
+         * @expectedExceptionMessage can't reflect parameter 'doesntExist' of '\Test\HintNotFound'
+         */
+        public function testHintNotFound()
+        {
+            $instance = new DependencyContainer();
+            $this->assertTrue($instance->has('\Test\HintNotFound'));
+            $instance->get('\Test\HintNotFound');
+        }
+
+        /**
+         * @expectedException \King23\DI\Exception\NotFoundException
+         * @expectedExceptionMessage no Injector registered for interface: 'Inject\Something'
+         */
+        public function testInjectorNotFound()
+        {
+            $instance = new DependencyContainer();
+            $this->assertTrue($instance->has('\Test\InjectorNotFound'));
+            $instance->get('\Test\InjectorNotFound');
         }
 
         public function testSingleton()
@@ -87,8 +113,11 @@ namespace King23\DI {
                 }
             );
 
-            $result1 = $instance->getInstanceOf(\Test\InjectHere::class);
-            $result2 = $instance->getInstanceOf(\Test\InjectHere::class);
+            $this->assertTrue($instance->has(\Inject\Mock::class));
+            $this->assertTrue($instance->has(\Test\InjectHere::class));
+
+            $result1 = $instance->get(\Test\InjectHere::class);
+            $result2 = $instance->get(\Test\InjectHere::class);
             $this->assertInstanceOf('\Inject\MockImplemented', $result1->mockInjected);
             $this->assertInstanceOf('\Inject\MockImplemented', $result2->mockInjected);
             $this->assertTrue($result1->mockInjected === $result2->mockInjected);
@@ -104,8 +133,11 @@ namespace King23\DI {
                 }
             );
 
-            $result1 = $instance->getInstanceOf(\Test\InjectHere::class);
-            $result2 = $instance->getInstanceOf(\Test\InjectHere::class);
+            $this->assertTrue($instance->has(\Inject\Mock::class));
+            $this->assertTrue($instance->has(\Test\InjectHere::class));
+
+            $result1 = $instance->get(\Test\InjectHere::class);
+            $result2 = $instance->get(\Test\InjectHere::class);
             $this->assertInstanceOf('\Inject\MockImplemented', $result1->mockInjected);
             $this->assertInstanceOf('\Inject\MockImplemented', $result2->mockInjected);
             $this->assertTrue($result1->mockInjected !== $result2->mockInjected);
@@ -118,14 +150,14 @@ namespace King23\DI {
         public function testNoHint()
         {
             $instance = new DependencyContainer();
-            $instance->getInstanceOf(\Test\InjectNoHint::class);
+            $instance->get(\Test\InjectNoHint::class);
         }
 
         public function testSelfInject()
         {
             $instance = new DependencyContainer();
             $this->assertTrue(
-                $instance->getInstanceOf(\Test\SelfInject::class)->container === $instance
+                $instance->get(\Test\SelfInject::class)->container === $instance
             );
         }
     }
@@ -172,14 +204,6 @@ namespace Test {
         }
     }
 
-    class InjectFail
-    {
-        public function __construct(\Inject\Something $foobar)
-        {
-
-        }
-    }
-
     class InjectNoHint
     {
         public function __construct($foo)
@@ -195,6 +219,20 @@ namespace Test {
         public function __construct(ContainerInterface $container)
         {
             $this->container = $container;
+        }
+    }
+
+    class HintNotFound
+    {
+        public function __construct(\Inject\DoesntExist $doesntExist)
+        {
+        }
+    }
+
+    class InjectorNotFound
+    {
+        public function __construct(\Inject\Something $something)
+        {
         }
     }
 }
