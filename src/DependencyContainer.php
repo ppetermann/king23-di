@@ -122,19 +122,7 @@ class DependencyContainer implements ContainerInterface
         if (!is_null($constructor)) {
             /** @var \ReflectionParameter $parameter */
             foreach ($constructor->getParameters() as $parameter) {
-                try {
-                    if (is_null($parameter->getClass())) {
-                        throw new NotFoundException("parameters for constructor contains field without typehint");
-                    }
-                } catch (\ReflectionException $reflectionException) {
-                    throw new NotFoundException("can't reflect parameter '{$parameter->name}' of '$classname'", 0, $reflectionException);
-                }
-                $paramClass = $parameter->getClass()->getName();
-                if ($this->hasServiceFor($paramClass)) {
-                    $args[] = $this->getServiceInstanceFor($paramClass);
-                } else {
-                    $args[] = $this->get($paramClass);
-                }
+                $args[] = $this->handleReflectionParameter($parameter, $classname);
             }
         }
 
@@ -166,5 +154,29 @@ class DependencyContainer implements ContainerInterface
         // if we don't have as service registered, we might still pull one from the hat
         // so lets at least check if the class would be available
         return class_exists($id, true);
+    }
+
+    /**
+     * @param \ReflectionParameter $parameter
+     * @param string $classname
+     * @return mixed|object
+     * @throws NotFoundException
+     * @throws \ReflectionException
+     */
+    private function handleReflectionParameter(\ReflectionParameter $parameter, $classname)
+    {
+        try {
+            if (is_null($parameter->getClass())) {
+                throw new NotFoundException("parameters for constructor contains field without typehint");
+            }
+        } catch (\ReflectionException $reflectionException) {
+            throw new NotFoundException("can't reflect parameter '{$parameter->name}' of '$classname'", 0, $reflectionException);
+        }
+        $paramClass = $parameter->getClass()->getName();
+        if ($this->hasServiceFor($paramClass)) {
+            return $this->getServiceInstanceFor($paramClass);
+        } else {
+            return $this->get($paramClass);
+        }
     }
 }
