@@ -187,7 +187,7 @@ namespace Inject {
 
 namespace Test {
 
-    use King23\DI\ContainerInterface;
+    use Psr\Container\ContainerInterface;
 
     class InjectHere
     {
