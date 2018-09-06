@@ -3,8 +3,9 @@
 namespace King23\DI {
 
     use Inject\MockImplemented;
+    use PHPUnit\Framework\TestCase;
 
-    class DependencyContainerPsr11Test extends \PHPUnit_Framework_TestCase
+    class DependencyContainerPsr11Test extends TestCase
     {
         /**
          * @expectedException \King23\DI\Exception\AlreadyRegisteredException
