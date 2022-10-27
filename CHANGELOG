@@ -3,6 +3,13 @@ VERSION 2  PSR-11 SUPPORT
 =========================
 
    Version 2.0 - PSR-11 support
+      27/10/2022 16:33  2.0.2  bringing it up to date
+         05fbe29 reflection fixes
+         1a112da exception messages
+         745fa5a add phpunit result cache to gitignore
+         d3be62f correct for phpunit warings
+         11f6dd4 dependency update
+         b14ec9a update to latest phpunit
       25/08/2018 18:24  2.0.1  make sure this works with both the king23 and the psr interface
          89d9874 feature: register both interfaces
          87a3827 bugfix: register the psr container
