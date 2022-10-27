@@ -8,12 +8,12 @@ namespace King23\DI {
     class DependencyContainerPsr11Test extends TestCase
     {
         /**
-         * @expectedException \King23\DI\Exception\AlreadyRegisteredException
          * @expectedExceptionMessage Error: for test there is already an implementation registered
          */
         public function testDoubleRegister()
         {
             $instance = new DependencyContainer();
+            $this->expectException(\King23\DI\Exception\AlreadyRegisteredException::class);
 
             // same injector two times should throw exception
             $instance->register(
@@ -29,11 +29,11 @@ namespace King23\DI {
         }
 
         /**
-         * @expectedException \King23\DI\Exception\AlreadyRegisteredException
          * @expectedExceptionMessage Error: for test there is already an implementation registered
          */
         public function testDoubleRegisterFactory()
         {
+            $this->expectException(\King23\DI\Exception\AlreadyRegisteredException::class);
             $instance = new DependencyContainer();
 
             // same injector two times should throw exception
@@ -72,33 +72,33 @@ namespace King23\DI {
         }
 
         /**
-         * @expectedException \King23\DI\Exception\NotFoundException
          * @expectedExceptionMessage Class/Interface not found: '\Test\InjectFail'
          */
         public function testClassNotFound()
         {
+            $this->expectException(\King23\DI\Exception\NotFoundException::class);
             $instance = new DependencyContainer();
             $this->assertFalse($instance->has('\Test\InjectFail'));
             $instance->get('\Test\InjectFail');
         }
 
         /**
-         * @expectedException \King23\DI\Exception\NotFoundException
          * @expectedExceptionMessage can't reflect parameter 'doesntExist' of '\Test\HintNotFound'
          */
         public function testHintNotFound()
         {
+            $this->expectException(\King23\DI\Exception\NotFoundException::class);   
             $instance = new DependencyContainer();
             $this->assertTrue($instance->has('\Test\HintNotFound'));
             $instance->get('\Test\HintNotFound');
         }
 
         /**
-         * @expectedException \King23\DI\Exception\NotFoundException
          * @expectedExceptionMessage no Injector registered for interface: 'Inject\Something'
          */
         public function testInjectorNotFound()
         {
+            $this->expectException(\King23\DI\Exception\NotFoundException::class);
             $instance = new DependencyContainer();
             $this->assertTrue($instance->has('\Test\InjectorNotFound'));
             $instance->get('\Test\InjectorNotFound');
@@ -145,11 +145,11 @@ namespace King23\DI {
         }
 
         /**
-         * @expectedException \King23\DI\Exception\NotFoundException
          * @expectedExceptionMessage parameters for constructor contains field without typehint
          */
         public function testNoHint()
         {
+            $this->expectException(\King23\DI\Exception\NotFoundException::class);
             $instance = new DependencyContainer();
             $instance->get(\Test\InjectNoHint::class);
         }
