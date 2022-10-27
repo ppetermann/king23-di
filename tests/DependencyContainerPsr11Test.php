@@ -80,7 +80,7 @@ namespace King23\DI {
 
         public function testHintNotFound()
         {
-            $this->expectExceptionMessage("can't reflect parameter 'doesntExist' of '\Test\HintNotFound'");
+            $this->expectExceptionMessage("Class/Interface not found: 'Inject\DoesntExist'");
             $this->expectException(\King23\DI\Exception\NotFoundException::class);   
             $instance = new DependencyContainer();
             $this->assertTrue($instance->has('\Test\HintNotFound'));

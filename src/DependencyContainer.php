@@ -11,7 +11,7 @@ use King23\DI\Exception\NotFoundException;
  */
 class DependencyContainer implements ContainerInterface
 {
-    protected $injectors = [];
+    protected array $injectors = [];
 
     /**
      * Constructor
@@ -171,16 +171,16 @@ class DependencyContainer implements ContainerInterface
      * @throws NotFoundException
      * @throws \ReflectionException
      */
-    private function handleReflectionParameter(\ReflectionParameter $parameter, $classname)
+    private function handleReflectionParameter(\ReflectionParameter $parameter, string $classname)
     {
         try {
-            if (is_null($parameter->getClass())) {
+            if (is_null($parameter->getType())) {
                 throw new NotFoundException("parameters for constructor contains field without typehint");
             }
         } catch (\ReflectionException $reflectionException) {
             throw new NotFoundException("can't reflect parameter '{$parameter->name}' of '$classname'", 0, $reflectionException);
         }
-        $paramClass = $parameter->getClass()->getName();
+        $paramClass = $parameter->getType()->getName();
         if ($this->hasServiceFor($paramClass)) {
             return $this->getServiceInstanceFor($paramClass);
         } else {
